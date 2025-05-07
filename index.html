@@ -22,6 +22,8 @@
             align-items: center;
             background: #f0f0f0;
             font-family: Arial, sans-serif;
+            padding-top: max(20px, env(safe-area-inset-top));
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
         }
 
         #game-container {
@@ -40,7 +42,7 @@
             /* Responsive scaling */
             transform: scale(min(1, calc(100vw / 600), calc(100vh / 800)));
             transform-origin: center center;
-            margin: auto;
+            margin: 20px auto;
         }
 
         #home-screen {
