@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
             width: 100vw;
             height: 100vh;
             margin: 0;
@@ -27,10 +27,11 @@
         }
 
         #game-container {
-            width: 600px;
-            height: 800px;
+            width: 100vw;
+            height: 100vh;
             max-width: 100vw;
             max-height: 100vh;
+            aspect-ratio: 3 / 4;
             background-image: url('assets/asset-bg-2.png');
             background-size: cover;
             background-position: center;
@@ -39,14 +40,14 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            margin: 50px auto;
+            margin: 0 auto;
         }
 
         @media (max-width: 600px), (max-height: 850px) {
             #game-container {
                 width: 100vw;
-                height: calc(100vh - 100px); /* 50px top + 50px bottom safe area */
-                margin: 50px auto;
+                height: 100vh;
+                margin: 0 auto;
                 left: unset;
                 right: unset;
             }
@@ -58,6 +59,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            min-height: 0;
             background-color: white;
             display: flex;
             flex-direction: column;
@@ -70,6 +72,8 @@
             transition: opacity 0.5s ease;
             opacity: 1;
             pointer-events: auto;
+            padding: 4vh 2vw 4vh 2vw;
+            box-sizing: border-box;
         }
 
         #home-screen.hide {
@@ -85,14 +89,26 @@
         }
 
         #home-screen img {
-            width: 350px;
+            width: 35vw;
+            max-width: 350px;
+            min-width: 120px;
             height: auto;
-            margin-bottom: 5px;
+            margin-bottom: 1vh;
+        }
+
+        #home-screen img[alt="Game Title"] {
+            width: 50vw;
+            max-width: 420px;
+            min-width: 180px;
+            height: auto;
+            margin-bottom: 2vh;
         }
 
         #start-button {
-            padding: 20px 60px;
-            font-size: 36px;
+            padding: 1.5vh 4vw;
+            font-size: 2.5vw;
+            min-font-size: 18px;
+            max-font-size: 28px;
             font-weight: 900;
             font-family: 'Arial Black', sans-serif;
             background: linear-gradient(180deg, #6dd400 0%, #3aa300 100%);
@@ -103,6 +119,10 @@
             box-shadow: 0 8px 0 #2c7e00, 0 12px 20px rgba(0, 0, 0, 0.3);
             text-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
+            margin-bottom: 2vh;
+            min-width: 120px;
+            max-width: 60vw;
+            white-space: normal;
         }
 
         #start-button:hover {
@@ -113,24 +133,32 @@
         .game-description {
             text-align: center;
             color: #3f3f3f;
-            font-size: 18px;
-            margin: 5px 20px 40px 20px;
-            max-width: 350px;
+            font-size: 2.5vw;
+            min-font-size: 18px;
+            max-font-size: 20px;
+            margin: 1vh 2vw 4vh 2vw;
+            max-width: 90vw;
             line-height: 1.5;
         }
 
         #player {
             position: absolute;
-            bottom: 60px;
-            left: 0;
-            width: 120px;
-            height: 80px;
-            background: none;
-            border-radius: 0;
-            transform: none;
+            left: 50%;
+            bottom: 5%;
+            transform: translateX(-50%);
+            width: 12vw;
+            max-width: 90px;
+            min-width: 68px;
+            height: auto;
             display: flex;
             justify-content: center;
             align-items: flex-end;
+        }
+
+        #player-img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         .badge {
@@ -478,12 +506,6 @@
             z-index: 999;
         }
 
-        #player-img {
-            width: 80px;
-            height: auto;
-            display: block;
-        }
-
         .blue-button {
             background: linear-gradient(180deg, #2196f3 0%, #1976d2 100%);
             color: #fff !important;
@@ -560,6 +582,38 @@
         #explore-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 0 #071200, 0 16px 25px rgba(0, 0, 0, 0.18);
+        }
+
+        #music-toggle {
+            width: 9vw !important;
+            height: 9vw !important;
+            max-width: 64px !important;
+            max-height: 64px !important;
+            min-width: 36px !important;
+            min-height: 36px !important;
+            aspect-ratio: 1 / 1 !important;
+        }
+
+        @media (max-width: 600px), (max-height: 700px) {
+            #home-screen img[alt="Game Title"] {
+                width: 70vw;
+                max-width: 260px;
+            }
+            #start-button {
+                font-size: 4vw;
+                padding: 1vh 3vw;
+            }
+            #music-toggle {
+                width: 14vw !important;
+                height: 14vw !important;
+                max-width: 48px !important;
+                max-height: 48px !important;
+                min-width: 28px !important;
+                min-height: 28px !important;
+            }
+            .game-description {
+                font-size: 3.5vw;
+            }
         }
     </style>
 </head>
@@ -738,7 +792,7 @@
                     spawnInterval = 250; // 4 badges per second
                     bombProbability = 0.45; // 45% chance for bombs in intense phase
                     gameInterval = setInterval(createBadge, spawnInterval);
-                    difficultyAlert.textContent = "Even Faster!";
+                    difficultyAlert.textContent = "Faster!";
                     difficultyAlert.style.display = 'block';
                     setTimeout(() => {
                         difficultyAlert.style.display = 'none';
@@ -998,26 +1052,28 @@
                 // Check for collision with player at basket level
                 const basketY = gameContainer.clientHeight - 150;
                 if (!hasCollided && badgeY + 30 >= basketY && badgeY + 30 <= basketY + 40) {
+                    // Use bounding box for accurate collision
                     const badgeX = parseInt(badge.style.left);
                     const badgeCenterX = badgeX + 30;
-                    
-                    // Check if the badge's center is within the basket's width
-                    if (badgeCenterX >= playerX && badgeCenterX <= playerX + player.clientWidth) {
+                    const playerRect = player.getBoundingClientRect();
+                    const containerRect = gameContainer.getBoundingClientRect();
+                    // Calculate player center in game coordinates
+                    const playerCenterX = playerRect.left - containerRect.left + playerRect.width / 2;
+                    const playerLeft = playerCenterX - playerRect.width / 2;
+                    const playerRight = playerCenterX + playerRect.width / 2;
+                    // Check if badge center is within player bounds
+                    if (badgeCenterX >= playerLeft && badgeCenterX <= playerRight) {
                         hasCollided = true;
                         score += badgeInfo.points;
                         document.getElementById('score-text').textContent = score;
-                        
                         // Update streak
                         updateStreak(badgeType === 'trophy');
-                        
                         // Create score animation at the point of collision
                         createScoreAnimation(badgeCenterX, gameContainer.clientHeight - 120, badgeType === 'trophy');
-                        
                         // Create explosion effect if it's a bomb
                         if (badgeType === 'bomb') {
                             createExplosionEffect(badgeCenterX, gameContainer.clientHeight - 150);
                         }
-                        
                         // Remove badge immediately when caught
                         badge.remove();
                         clearInterval(fallInterval);
@@ -1096,22 +1152,18 @@
                 if (!hasCollided && powerupY + 30 >= basketY && powerupY + 30 <= basketY + 40) {
                     const powerupX = parseInt(powerup.style.left);
                     const powerupCenterX = powerupX + 30;
-                    
-                    if (powerupCenterX >= playerX && powerupCenterX <= playerX + player.clientWidth) {
+                    const playerRect = player.getBoundingClientRect();
+                    const containerRect = gameContainer.getBoundingClientRect();
+                    const playerCenterX = playerRect.left - containerRect.left + playerRect.width / 2;
+                    const playerLeft = playerCenterX - playerRect.width / 2;
+                    const playerRight = playerCenterX + playerRect.width / 2;
+                    if (powerupCenterX >= playerLeft && powerupCenterX <= playerRight) {
                         hasCollided = true;
                         // Add time bonus
                         timeLeft += POWERUP_TIME_BONUS;
                         timerDisplay.textContent = `Time: ${timeLeft}`;
-                        
                         // Create time bonus animation
                         createTimeBonusAnimation(powerupCenterX, gameContainer.clientHeight - 120);
-                        
-                        // Visual feedback (removed background color change)
-                        // player.style.backgroundColor = '#00BCD4';
-                        // setTimeout(() => {
-                        //     player.style.backgroundColor = '#4CAF50';
-                        // }, 200);
-
                         powerup.remove();
                         clearInterval(fallInterval);
                         return;
@@ -1234,6 +1286,18 @@
             confettiCanvas.style.display = 'none';
             confettiCanvas.style.opacity = '1';
         }
+
+        // Add resize handler to recenter player
+        function resizeGame() {
+            const gameContainer = document.getElementById('game-container');
+            const player = document.getElementById('player');
+            // Recenter player horizontally
+            player.style.left = '50%';
+            player.style.transform = 'translateX(-50%)';
+        }
+        window.addEventListener('resize', resizeGame);
+        // Call once on load
+        resizeGame();
     </script>
 </body>
 </html> 
