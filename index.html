@@ -34,7 +34,7 @@
             aspect-ratio: 3 / 4;
             background-image: url('assets/asset-bg-2.png');
             background-size: cover;
-            background-position: center;
+            background-position: bottom center;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
@@ -143,9 +143,7 @@
 
         #player {
             position: absolute;
-            left: 50%;
             bottom: 5%;
-            transform: translateX(-50%);
             width: 12vw;
             max-width: 90px;
             min-width: 68px;
@@ -845,8 +843,7 @@
         }
 
         function movePlayer(x) {
-            const playerImg = document.getElementById('player-img');
-            const maxX = gameContainer.clientWidth - playerImg.clientWidth;
+            const maxX = gameContainer.offsetWidth - player.offsetWidth;
             playerX = Math.max(0, Math.min(x, maxX));
             player.style.left = `${playerX}px`;
         }
@@ -872,13 +869,16 @@
         // Touch controls
         gameContainer.addEventListener('touchstart', (e) => {
             if (!isGameRunning) return;
+            const rect = gameContainer.getBoundingClientRect();
             isDragging = true;
-            touchStartX = e.touches[0].clientX - playerX;
+            // Center touch on player
+            touchStartX = e.touches[0].clientX - rect.left - playerX;
         });
 
         gameContainer.addEventListener('touchmove', (e) => {
             if (!isGameRunning || !isDragging) return;
-            const touchX = e.touches[0].clientX - touchStartX;
+            const rect = gameContainer.getBoundingClientRect();
+            const touchX = e.touches[0].clientX - rect.left - player.offsetWidth / 2;
             movePlayer(touchX);
         });
 
@@ -890,7 +890,7 @@
         gameContainer.addEventListener('mousemove', (e) => {
             if (!isGameRunning) return;
             const rect = gameContainer.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left - player.clientWidth / 2;
+            const mouseX = e.clientX - rect.left - player.offsetWidth / 2;
             movePlayer(mouseX);
         });
 
@@ -1292,8 +1292,6 @@
             const gameContainer = document.getElementById('game-container');
             const player = document.getElementById('player');
             // Recenter player horizontally
-            player.style.left = '50%';
-            player.style.transform = 'translateX(-50%)';
         }
         window.addEventListener('resize', resizeGame);
         // Call once on load
