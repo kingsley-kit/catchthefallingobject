@@ -1117,6 +1117,9 @@
                     
                     console.log('Player registered:', { name: playerName, email: playerEmail });
                     
+                    // Zoom out on mobile after form submission
+                    zoomOutOnMobile();
+                    
                     // Hide registration screen and show home screen
                     registrationScreen.classList.add('hide');
                     setTimeout(() => {
@@ -1127,6 +1130,9 @@
                 } catch (error) {
                     console.error('Error during registration:', error);
                     alert('Registration completed. Game will work offline.');
+                    
+                    // Zoom out on mobile after form submission (even on error)
+                    zoomOutOnMobile();
                     
                     // Continue anyway
                     registrationScreen.classList.add('hide');
@@ -1141,6 +1147,10 @@
 
         startButton.addEventListener('click', () => {
             playSound(startgameSound, true);
+            
+            // Zoom out on mobile when starting game
+            zoomOutOnMobile();
+            
             homeScreen.classList.add('hide');
             setTimeout(() => {
                 homeScreen.style.display = 'none';
@@ -2002,6 +2012,28 @@
         window.addEventListener('load', () => {
             initializeSounds();
         });
+
+        // Function to zoom out on mobile devices
+        function zoomOutOnMobile() {
+            // Check if we're on a mobile device
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                // Force zoom out by setting viewport scale
+                const viewport = document.querySelector('meta[name="viewport"]');
+                if (viewport) {
+                    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+                }
+                
+                // Alternative method: scroll to top to reset zoom
+                window.scrollTo(0, 0);
+                
+                // Force blur on any focused input to prevent zoom
+                if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+                    document.activeElement.blur();
+                }
+                
+                console.log('Mobile zoom out applied');
+            }
+        }
 
         // Set music icon to off by default
         musicToggle.src = 'assets/music_off.webp';
