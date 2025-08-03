@@ -307,8 +307,14 @@
             transition: transform 0.1s ease, box-shadow 0.1s ease;
             margin-bottom: 2vh;
             width: 280px;
-            white-space: nowrap;
+            white-space: normal;
+            word-wrap: break-word;
+            text-align: center;
             image-rendering: pixelated;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #leaderboard-button {
@@ -328,8 +334,14 @@
             transition: transform 0.1s ease, box-shadow 0.1s ease;
             margin-bottom: 2vh;
             width: 280px;
-            white-space: nowrap;
+            white-space: normal;
+            word-wrap: break-word;
+            text-align: center;
             image-rendering: pixelated;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #start-button:hover {
@@ -533,7 +545,7 @@
         #streak-display {
             position: absolute;
             left: 30px;
-            top: 74px;
+            top: 90px;
             display: flex;
             align-items: center;
             padding: 0;
@@ -900,11 +912,25 @@
                 font-size: 4vw;
                 padding: 1vh 3vw;
                 width: 250px;
+                white-space: normal;
+                word-wrap: break-word;
+                text-align: center;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             #leaderboard-button {
                 font-size: 4vw;
                 padding: 1vh 3vw;
                 width: 250px;
+                white-space: normal;
+                word-wrap: break-word;
+                text-align: center;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             #game-over {
                 max-width: 280px;
@@ -1114,8 +1140,7 @@
         });
 
         startButton.addEventListener('click', () => {
-            startgameSound.currentTime = 0;
-            startgameSound.play();
+            playSound(startgameSound, true);
             homeScreen.classList.add('hide');
             setTimeout(() => {
                 homeScreen.style.display = 'none';
@@ -1267,8 +1292,7 @@
                 }
                 // If on home screen, start the game
                 else if (!isGameRunning && homeScreen.style.display !== 'none') {
-                    startgameSound.currentTime = 0;
-                    startgameSound.play();
+                    playSound(startgameSound, true);
                     homeScreen.classList.add('hide');
                     setTimeout(() => {
                         homeScreen.style.display = 'none';
@@ -1283,8 +1307,7 @@
                 else if (isGameRunning) {
                     endGame();
                     setTimeout(() => {
-                        startgameSound.currentTime = 0;
-                        startgameSound.play();
+                        playSound(startgameSound, true);
                         homeScreen.classList.add('hide');
                         setTimeout(() => {
                             homeScreen.style.display = 'none';
@@ -1596,11 +1619,9 @@
 
             // Play point sound if score is positive, bomb sound if negative
             if (isPositive) {
-                pointSound.currentTime = 0;
-                pointSound.play();
+                playSound(pointSound, true);
             } else {
-                bombSound.currentTime = 0;
-                bombSound.play();
+                playSound(bombSound, true);
                 console.log('Bomb sound played');
             }
 
@@ -1760,8 +1781,7 @@
             gameContainer.appendChild(animation);
 
             // Play time bonus sound
-            timeSound.currentTime = 0;
-            timeSound.play();
+            playSound(timeSound, true);
             console.log('Time sound played');
 
             setTimeout(() => {
@@ -1866,7 +1886,7 @@
         }
 
         function music_on() {
-            bgMusic.play();
+            playSound(bgMusic, true);
             musicToggle.src = 'assets/music_on.webp';
             musicPlaying = true;
         }
@@ -1885,14 +1905,106 @@
             }
         });
 
-        // Set music icon to off by default
-        bgMusic.volume = 0.5;
-        musicToggle.src = 'assets/music_off.webp';
+        // Add sound toggle functionality
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            if (!soundEnabled) {
+                // Mute all sounds
+                bgMusic.pause();
+                musicPlaying = false;
+                musicToggle.src = 'assets/music_off.webp';
+            }
+            console.log('Sound enabled:', soundEnabled);
+        }
 
-        // Set volumes for all sounds
-        pointSound.volume = 1.0;
-        bombSound.volume = 1.0;
-        timeSound.volume = 1.0;
+        // Add touch/click event to enable sounds on first interaction
+        function enableSoundsOnInteraction() {
+            if (!soundsLoaded) {
+                initializeSounds();
+            }
+            // Enable sounds on first user interaction
+            soundEnabled = true;
+            console.log('Sounds enabled on user interaction');
+        }
+
+        // Enable sounds on any user interaction
+        document.addEventListener('touchstart', enableSoundsOnInteraction, { once: true });
+        document.addEventListener('click', enableSoundsOnInteraction, { once: true });
+        document.addEventListener('keydown', enableSoundsOnInteraction, { once: true });
+
+        // Enhanced sound system for mobile
+        let soundEnabled = true;
+        let soundsLoaded = false;
+
+        // Sound preloading and mobile compatibility
+        function initializeSounds() {
+            const sounds = [bgMusic, pointSound, bombSound, timeSound, startgameSound];
+            
+            sounds.forEach(sound => {
+                sound.volume = 0.7; // Slightly lower volume for mobile
+                sound.preload = 'auto';
+                
+                // Add error handling for mobile
+                sound.addEventListener('error', (e) => {
+                    console.warn('Sound failed to load:', e);
+                });
+                
+                // Add load event
+                sound.addEventListener('canplaythrough', () => {
+                    console.log('Sound loaded successfully');
+                });
+            });
+
+            // Set specific volumes
+            bgMusic.volume = 0.5;
+            pointSound.volume = 0.8;
+            bombSound.volume = 0.8;
+            timeSound.volume = 0.8;
+            startgameSound.volume = 0.8;
+            
+            soundsLoaded = true;
+            console.log('All sounds initialized');
+        }
+
+        // Mobile-friendly sound playing function
+        function playSound(audioElement, forcePlay = false) {
+            if (!soundEnabled || !soundsLoaded) return;
+            
+            try {
+                // Reset to beginning
+                audioElement.currentTime = 0;
+                
+                // For mobile, we need to handle the play promise
+                const playPromise = audioElement.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            // Sound played successfully
+                        })
+                        .catch(error => {
+                            console.warn('Sound play failed:', error);
+                            // On mobile, user interaction might be required
+                            if (forcePlay) {
+                                // Try again after a short delay
+                                setTimeout(() => {
+                                    audioElement.play().catch(e => console.warn('Retry failed:', e));
+                                }, 100);
+                            }
+                        });
+                }
+            } catch (error) {
+                console.warn('Sound play error:', error);
+            }
+        }
+
+        // Initialize sounds when page loads
+        window.addEventListener('load', () => {
+            initializeSounds();
+        });
+
+        // Set music icon to off by default
+        musicToggle.src = 'assets/music_off.webp';
 
         function launchConfetti() {
             confettiCanvas.width = gameContainer.clientWidth;
