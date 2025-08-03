@@ -820,6 +820,7 @@
                 padding: 6px 12px;
                 border-width: 2px;
                 box-shadow: 3px 3px 0 #111;
+                top: 40px !important; /* Move score lower on mobile */
             }
             #score-icon {
                 width: 21px;
@@ -835,10 +836,12 @@
                 min-height: 36px;
                 border-width: 2px;
                 box-shadow: 3px 3px 0 #111;
+                top: 40px !important; /* Move timer lower on mobile */
             }
             #streak-display {
                 font-size: 12px;
                 gap: 4px;
+                top: 70px !important; /* Adjust streak position for mobile */
             }
             #streak-icon {
                 width: 16px;
@@ -896,7 +899,7 @@
                 min-width: 250px;
             }
             #player {
-                bottom: 10%;
+                bottom: 5%;
                 width: 18vw;
                 max-width: 120px;
                 min-width: 90px;
@@ -1930,6 +1933,17 @@
             if (!soundsLoaded) {
                 initializeSounds();
             }
+            
+            // Resume audio context if suspended
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            // Preload audio buffers for instant playback
+            if (audioContext && Object.keys(audioBuffers).length === 0) {
+                preloadAudioBuffers();
+            }
+            
             // Enable sounds on first user interaction
             soundEnabled = true;
             console.log('Sounds enabled on user interaction');
@@ -1971,6 +1985,44 @@
         // Enhanced sound system for mobile
         let soundEnabled = true;
         let soundsLoaded = false;
+        let audioContext = null;
+        let audioBuffers = {};
+        let audioNodes = {};
+
+        // Create audio context for better mobile performance
+        function createAudioContext() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                console.log('Audio context created');
+            } catch (error) {
+                console.warn('Audio context creation failed:', error);
+            }
+        }
+
+        // Preload audio files as buffers for instant playback
+        async function preloadAudioBuffers() {
+            if (!audioContext) return;
+            
+            const audioFiles = {
+                point: 'assets/points.mp3',
+                bomb: 'assets/bomb.mp3',
+                time: 'assets/time.mp3',
+                startgame: 'assets/startgame.mp3',
+                music: 'assets/music.mp3'
+            };
+
+            for (const [name, url] of Object.entries(audioFiles)) {
+                try {
+                    const response = await fetch(url);
+                    const arrayBuffer = await response.arrayBuffer();
+                    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                    audioBuffers[name] = audioBuffer;
+                    console.log(`Audio buffer loaded: ${name}`);
+                } catch (error) {
+                    console.warn(`Failed to load audio buffer: ${name}`, error);
+                }
+            }
+        }
 
         // Sound preloading and mobile compatibility
         function initializeSounds() {
@@ -2002,9 +2054,21 @@
             console.log('All sounds initialized');
         }
 
-        // Mobile-friendly sound playing function
+        // Mobile-friendly sound playing function with instant playback
         function playSound(audioElement, forcePlay = false) {
-            if (!soundEnabled || !soundsLoaded) return;
+            if (!soundEnabled) return;
+            
+            // Try Web Audio API first for instant playback
+            if (audioContext && audioBuffers) {
+                const soundName = getSoundName(audioElement);
+                if (audioBuffers[soundName]) {
+                    playAudioBuffer(soundName);
+                    return;
+                }
+            }
+            
+            // Fallback to HTML5 Audio
+            if (!soundsLoaded) return;
             
             try {
                 // Reset to beginning
@@ -2034,9 +2098,52 @@
             }
         }
 
+        // Get sound name from audio element
+        function getSoundName(audioElement) {
+            const src = audioElement.src;
+            if (src.includes('points.mp3')) return 'point';
+            if (src.includes('bomb.mp3')) return 'bomb';
+            if (src.includes('time.mp3')) return 'time';
+            if (src.includes('startgame.mp3')) return 'startgame';
+            if (src.includes('music.mp3')) return 'music';
+            return null;
+        }
+
+        // Play audio buffer instantly
+        function playAudioBuffer(soundName) {
+            if (!audioContext || !audioBuffers[soundName]) return;
+            
+            try {
+                const source = audioContext.createBufferSource();
+                const gainNode = audioContext.createGain();
+                
+                source.buffer = audioBuffers[soundName];
+                source.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Set volume based on sound type
+                const volumes = {
+                    point: 0.8,
+                    bomb: 0.8,
+                    time: 0.8,
+                    startgame: 0.8,
+                    music: 0.5
+                };
+                
+                gainNode.gain.value = volumes[soundName] || 0.8;
+                
+                source.start(0);
+                console.log(`Audio buffer played: ${soundName}`);
+            } catch (error) {
+                console.warn('Audio buffer play failed:', error);
+            }
+        }
+
         // Initialize sounds when page loads
         window.addEventListener('load', () => {
             initializeSounds();
+            // Create audio context on user interaction
+            createAudioContext();
         });
 
         // Set music icon to off by default
