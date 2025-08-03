@@ -802,6 +802,15 @@
         }
 
         @media (max-width: 600px) {
+            /* Safari-specific viewport handling */
+            @supports (-webkit-touch-callout: none) {
+                #game-container {
+                    padding-top: env(safe-area-inset-top);
+                    padding-bottom: env(safe-area-inset-bottom);
+                    padding-left: env(safe-area-inset-left);
+                    padding-right: env(safe-area-inset-right);
+                }
+            }
             #game-container {
                 background-image: url('assets/bg_1.webp');
             }
@@ -820,7 +829,9 @@
                 padding: 6px 12px;
                 border-width: 2px;
                 box-shadow: 3px 3px 0 #111;
-                top: 40px !important; /* Move score lower on mobile */
+                top: calc(40px + env(safe-area-inset-top)) !important; /* Account for Safari safe area */
+                left: calc(20px + env(safe-area-inset-left)) !important;
+                z-index: 1000 !important; /* Ensure visibility */
             }
             #score-icon {
                 width: 21px;
@@ -836,12 +847,29 @@
                 min-height: 36px;
                 border-width: 2px;
                 box-shadow: 3px 3px 0 #111;
-                top: 40px !important; /* Move timer lower on mobile */
+                top: calc(40px + env(safe-area-inset-top)) !important; /* Account for Safari safe area */
+                right: calc(20px + env(safe-area-inset-right)) !important;
+                z-index: 1000 !important; /* Ensure visibility */
             }
             #streak-display {
                 font-size: 12px;
                 gap: 4px;
-                top: 70px !important; /* Adjust streak position for mobile */
+                top: calc(70px + env(safe-area-inset-top)) !important; /* Account for Safari safe area */
+                left: calc(30px + env(safe-area-inset-left)) !important;
+                z-index: 1000 !important; /* Ensure visibility */
+            }
+            
+            /* Safari-specific adjustments for devices with notch */
+            @supports (-webkit-touch-callout: none) {
+                #score-display {
+                    top: calc(60px + env(safe-area-inset-top)) !important;
+                }
+                #timer-display {
+                    top: calc(60px + env(safe-area-inset-top)) !important;
+                }
+                #streak-display {
+                    top: calc(90px + env(safe-area-inset-top)) !important;
+                }
             }
             #streak-icon {
                 width: 16px;
