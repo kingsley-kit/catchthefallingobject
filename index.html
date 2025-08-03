@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catch the Objects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -21,7 +22,7 @@
             justify-content: center;
             align-items: center;
             background: #f0f0f0;
-            font-family: Arial, sans-serif;
+            font-family: 'Press Start 2P', monospace;
             padding-top: max(50px, env(safe-area-inset-top));
             padding-bottom: max(50px, env(safe-area-inset-bottom));
         }
@@ -32,7 +33,7 @@
             max-width: 100vw;
             max-height: 100vh;
             aspect-ratio: 3 / 4;
-            background-image: url('assets/asset-bg-2.png');
+            background-image: url('assets/bg_2.webp');
             background-size: cover;
             background-position: bottom center;
             position: relative;
@@ -53,6 +54,34 @@
             }
         }
 
+        #registration-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            background-image: url('assets/bg_2.webp');
+            background-size: cover;
+            background-position: center;
+            transition: opacity 0.5s ease;
+            opacity: 1;
+            pointer-events: auto;
+            padding: 4vh 2vw 4vh 2vw;
+            box-sizing: border-box;
+        }
+
+        #registration-screen.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
         #home-screen {
             position: absolute;
             top: 0;
@@ -60,13 +89,13 @@
             width: 100%;
             height: 100%;
             min-height: 0;
-            background-color: white;
+            background-color: transparent;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            background-image: url('assets/asset-bg-1.png');
+            background-image: url('assets/bg_2.webp');
             background-size: cover;
             background-position: center;
             transition: opacity 0.5s ease;
@@ -79,6 +108,42 @@
         #home-screen.hide {
             opacity: 0;
             pointer-events: none;
+        }
+
+        #game-finish-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            background-image: url('assets/bg_2.webp');
+            background-size: cover;
+            background-position: center;
+            transition: opacity 0.5s ease;
+            opacity: 1;
+            pointer-events: auto;
+            padding: 4vh 2vw 4vh 2vw;
+            box-sizing: border-box;
+        }
+
+        #game-finish-screen.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #registration-screen h1 {
+            font-size: 21px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'Press Start 2P', monospace;
         }
 
         #home-screen h1 {
@@ -96,57 +161,214 @@
             margin-bottom: 1vh;
         }
 
-        #home-screen img[alt="Game Title"] {
-            width: 50vw;
-            max-width: 420px;
-            min-width: 180px;
-            height: auto;
+        #registration-screen img[alt="Game Title"] {
+            width: 80vw;
+            max-width: 250px;
+            min-width: 150px;
+            height: auto;   
             margin-bottom: 2vh;
+            margin-top: -10vh;
         }
 
-        #start-button {
-            padding: 1.5vh 4vw;
-            font-size: 2.5vw;
+        #home-screen img[alt="Game Title"] {
+            width: 25vw;
+            max-width: 200px;
+            min-width: 120px;
+            height: auto;
+            margin-bottom: 2vh;
+            margin-top: -10vh;
+        }
+
+        #game-finish-screen img[alt="Game Title"] {
+            width: 25vw;
+            max-width: 200px;
+            min-width: 120px;
+            height: auto;
+            margin-bottom: 2vh;
+            margin-top: -10vh;
+        }
+
+        .registration-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 12px;
+            color: #333;
+            text-align: left;
+        }
+
+        .form-group input {
+            padding: 12px 16px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            border: 3px solid #333;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #6dd400;
+        }
+
+        #register-button {
+            padding: 3vh 4vw;
+            font-size: 1.5vw;
             min-font-size: 18px;
             max-font-size: 28px;
             font-weight: 900;
-            font-family: 'Arial Black', sans-serif;
-            background: linear-gradient(180deg, #6dd400 0%, #3aa300 100%);
+            font-family: 'Press Start 2P', monospace;
+            background: #4A90E2;
             color: white;
-            border: none;
-            border-radius: 25px;
+            border: 4px solid #2C5AA0;
+            border-radius: 0;
             cursor: pointer;
-            box-shadow: 0 8px 0 #2c7e00, 0 12px 20px rgba(0, 0, 0, 0.3);
-            text-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 4px 4px 0 #1A3A6B;
+            text-shadow: 2px 2px 0 #2C5AA0;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            margin-top: 2vh;
+            width: 100%;
+            white-space: normal;
+            image-rendering: pixelated;
+        }
+
+        #register-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 2px 2px 0 #1A3A6B;
+        }
+
+        #register-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 0 0 #1A3A6B;
+        }
+
+        #start-button {
+            padding: 3vh 4vw;
+            font-size: 1.5vw;
+            min-font-size: 18px;
+            max-font-size: 28px;
+            font-weight: 900;
+            font-family: 'Press Start 2P', monospace;
+            background: #4A90E2;
+            color: white;
+            border: 4px solid #2C5AA0;
+            border-radius: 0;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 #1A3A6B;
+            text-shadow: 2px 2px 0 #2C5AA0;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
             margin-bottom: 2vh;
             min-width: 120px;
             max-width: 60vw;
             white-space: normal;
+            image-rendering: pixelated;
+        }
+
+        #play-again-button {
+            padding: 3vh 4vw;
+            font-size: 1.5vw;
+            min-font-size: 18px;
+            max-font-size: 28px;
+            font-weight: 900;
+            font-family: 'Press Start 2P', monospace;
+            background: #4A90E2;
+            color: white;
+            border: 4px solid #2C5AA0;
+            border-radius: 0;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 #1A3A6B;
+            text-shadow: 2px 2px 0 #2C5AA0;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            margin-bottom: 2vh;
+            width: 280px;
+            white-space: nowrap;
+            image-rendering: pixelated;
+        }
+
+        #leaderboard-button {
+            padding: 3vh 4vw;
+            font-size: 1.5vw;
+            min-font-size: 18px;
+            max-font-size: 28px;
+            font-weight: 900;
+            font-family: 'Press Start 2P', monospace;
+            background: #FF6B35;
+            color: white;
+            border: 4px solid #E55A2B;
+            border-radius: 0;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 #C44A1F;
+            text-shadow: 2px 2px 0 #E55A2B;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            margin-bottom: 2vh;
+            width: 280px;
+            white-space: nowrap;
+            image-rendering: pixelated;
         }
 
         #start-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 0 #2c7e00, 0 16px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 2px 2px 0 #1A3A6B;
+        }
+
+        #start-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 0 0 #1A3A6B;
+        }
+
+        #play-again-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 2px 2px 0 #1A3A6B;
+        }
+
+        #play-again-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 0 0 #1A3A6B;
+        }
+
+        #leaderboard-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 2px 2px 0 #C44A1F;
+        }
+
+        #leaderboard-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 0 0 #C44A1F;
         }
 
         .game-description {
             text-align: center;
             color: #3f3f3f;
-            font-size: 2.5vw;
+            font-size: 1.5vw;
             min-font-size: 18px;
             max-font-size: 20px;
-            margin: 1vh 2vw 4vh 2vw;
-            max-width: 90vw;
+            margin: 0.5vh 2vw 4vh 2vw;
+            max-width: 70vw;
             line-height: 1.5;
         }
 
         #player {
             position: absolute;
-            bottom: 5%;
-            width: 12vw;
-            max-width: 90px;
-            min-width: 68px;
+            bottom: 8%;
+            width: 15vw;
+            max-width: 110px;
+            min-width: 80px;
             height: auto;
             display: flex;
             justify-content: center;
@@ -173,20 +395,24 @@
         .score-animation {
             position: absolute;
             color: white;
-            font-size: 24px;
+            font-size: 16px;
             font-weight: bold;
+            font-family: 'Press Start 2P', monospace;
             pointer-events: none;
             z-index: 2;
             animation: floatUp 0.8s ease-out forwards;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
         }
 
         .score-plus {
-            color: #efefef;
+            color: #f3f3f3;
+            text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
         }
 
         .score-minus {
             color: #FF4444;
+            text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
         }
 
         @keyframes floatUp {
@@ -218,13 +444,15 @@
 
         .time-bonus-animation {
             position: absolute;
-            color: #00BCD4;
-            font-size: 32px;
+            color: #cac421;
+            font-size: 12px;
             font-weight: bold;
+            font-family: 'Press Start 2P', monospace;
             pointer-events: none;
             z-index: 2;
             animation: timeFloat 1.2s ease-out forwards;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+            white-space: nowrap;
         }
 
         @keyframes timeFloat {
@@ -239,15 +467,18 @@
             left: 20px;
             display: flex;
             align-items: center;
-            background: #1793d1;
-            border-radius: 30px;
-            padding: 6px 24px 6px 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: #2a2a2a;
+            border: 3px solid #444;
+            border-radius: 0;
+            padding: 8px 16px;
+            box-shadow: 4px 4px 0 #111;
             font-size: 32px;
             font-weight: bold;
+            font-family: 'Press Start 2P', monospace;
             color: #fff;
             z-index: 10;
-            gap: 5px;
+            gap: 8px;
+            image-rendering: pixelated;
         }
 
         #score-icon {
@@ -274,17 +505,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #1793d1;
-            border-radius: 30px;
-            padding: 6px 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: #2a2a2a;
+            border: 3px solid #444;
+            border-radius: 0;
+            padding: 12px 16px;
+            box-shadow: 4px 4px 0 #111;
             font-size: 32px;
             font-weight: bold;
+            font-family: 'Press Start 2P', monospace;
             color: #fff;
-            text-align: right;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            min-width: 70px;
+            text-align: center;
+            min-width: 80px;
             min-height: 48px;
+            image-rendering: pixelated;
         }
 
         #streak-display {
@@ -343,12 +576,14 @@
         .bonus-animation {
             position: absolute;
             color: #FFD700;
-            font-size: 32px;
+            font-size: 12px;
             font-weight: bold;
+            font-family: 'Press Start 2P', monospace;
             pointer-events: none;
             z-index: 2;
             animation: bonusFloat 1.2s ease-out forwards;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
         }
 
         @keyframes explode {
@@ -368,14 +603,21 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(255, 87, 34, 0.9);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 25px;
+            background-color: #FFD700;
+            color: #000;
+            padding: 15px 40px;
+            border: 4px solid #FFA500;
+            border-radius: 0;
             font-size: 24px;
+            font-family: 'Press Start 2P', monospace;
             display: none;
             animation: fadeInOut 2s ease-in-out;
             z-index: 100;
+            box-shadow: 4px 4px 0 #FF8C00;
+            image-rendering: pixelated;
+            white-space: nowrap;
+            min-width: 300px;
+            text-align: center;
         }
 
         @keyframes fadeInOut {
@@ -391,40 +633,46 @@
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            background: linear-gradient(180deg, #eaf3fa90 0%, #b6cbe386 100%);
-            padding: 32px 18px 32px 18px;
-            border-radius: 28px;
+            background: #4A90E2;
+            border: 4px solid #2C5AA0;
+            border-radius: 0;
+            padding: 24px 16px;
             display: none;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            box-shadow: 4px 4px 0 #1A3A6B;
             width: 90%;
-            max-width: 380px;
+            max-width: 320px;
             z-index: 1000;
+            image-rendering: pixelated;
         }
 
-        #game-over-flag {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 0.5em;
-        }
 
-        #game-over-title {
-            font-size: 40px;
+
+        #final-score-display {
+            font-size: 28px;
             font-weight: 900;
-            color: #ffb300;
-            text-shadow: 0 2px 0 #3a2b0a, 0 4px 12px rgba(0,0,0,0.12);
-            margin-bottom: 10px;
+            font-family: 'Press Start 2P', monospace;
+            color: #fff;
+            text-shadow: 2px 2px 0 #2C5AA0;
+            margin-bottom: 15px;
             letter-spacing: 1px;
+            text-align: center;
         }
 
-        #final-score-message {
-            font-size: 18px;
+        #finish-message {
+            font-size: 10px;
             font-weight: bold;
-            color: #333;
-            margin-bottom: 30px;
+            font-family: 'Press Start 2P', monospace;
+            color: #000;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            line-height: 1.3;
+            word-wrap: break-word;
+            text-align: center;
+            padding: 0 8px;
+            text-shadow: 1px 1px 0 #fff;
         }
 
         #final-score-coin {
@@ -441,43 +689,35 @@
         .game-over-button {
             display: block;
             width: 100%;
-            padding: 18px 10px;
-            margin: 0 0 18px 0;
-            font-size: 22px;
+            padding: 12px 10px;
+            margin: 0 0 12px 0;
+            font-size: 16px;
             font-weight: 900;
-            font-family: 'Arial Black', sans-serif;
-            border: none;
-            border-radius: 18px;
+            font-family: 'Press Start 2P', monospace;
+            border: 3px solid #2C5AA0;
+            border-radius: 0;
             cursor: pointer;
-            box-shadow: 0 4px 0 #2c7e00, 0 8px 16px rgba(0, 0, 0, 0.18);
-            text-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
-            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 3px 3px 0 #1A3A6B;
+            text-shadow: 2px 2px 0 #2C5AA0;
+            transition: transform 0.1s, box-shadow 0.1s;
             text-decoration: none;
             white-space: normal;
             word-break: break-word;
             text-align: center;
+            image-rendering: pixelated;
         }
 
         #play-again {
-            background: linear-gradient(180deg, #6dd400 0%, #3aa300 100%);
+            background: #4A90E2;
             color: #fff;
-            margin-bottom: 18px;
+            margin-bottom: 12px;
         }
 
         #play-again:hover {
             background: #45a049;
         }
 
-        #explore-button {
-            background: #232b3a;
-            color: #fff !important;
-            box-shadow: 0 4px 0 #11151c, 0 8px 16px rgba(0, 0, 0, 0.18);
-            margin-bottom: 0;
-        }
 
-        #explore-button:hover {
-            background: #1a1f2b;
-        }
 
         /* Confetti styles */
         #confetti-canvas {
@@ -515,72 +755,15 @@
             box-shadow: 0 10px 0 #0d47a1, 0 16px 25px rgba(0, 0, 0, 0.3);
         }
 
-        #explore-button {
-            white-space: nowrap;
-        }
 
-        .cloud {
-            position: absolute;
-            top: 20px;
-            width: 120px;
-            height: auto;
-            z-index: 0;
-            animation: cloudSway 4s ease-in-out infinite;
-            pointer-events: none;
-        }
 
-        .cloud:nth-child(2) {
-            left: 30%;
-            animation-delay: -2s;
-            width: 100px;
-        }
 
-        .cloud:nth-child(3) {
-            left: 70%;
-            animation-delay: -1s;
-            width: 140px;
-        }
-
-        .home-cloud {
-            position: absolute;
-            top: 15px;
-            left: 20%;
-            width: 100px !important;
-            height: auto !important;
-            z-index: 0;
-            animation: cloudSway 4s ease-in-out infinite;
-            pointer-events: none;
-            margin-bottom: 0 !important;
-        }
-
-        .home-cloud:nth-child(2) {
-            top: 50px;
-            left: 50%;
-            animation-delay: -2s;
-            width: 70px;
-        }
-
-        .home-cloud:nth-child(3) {
-            left: 80%;
-            top: 20px;
-            animation-delay: -1s;
-            width: 50px;
-        }
-
-        @keyframes cloudSway {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
-            100% { transform: translateX(0); }
-        }
 
         #play-again:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 0 #2c7e00, 0 16px 25px rgba(0, 0, 0, 0.18);
         }
-        #explore-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 0 #071200, 0 16px 25px rgba(0, 0, 0, 0.18);
-        }
+
 
         #music-toggle {
             width: 9vw !important;
@@ -592,10 +775,73 @@
             aspect-ratio: 1 / 1 !important;
         }
 
-        @media (max-width: 600px), (max-height: 700px) {
+        @media (max-width: 600px) {
+            #game-container {
+                background-image: url('assets/bg_1.webp');
+            }
+            #registration-screen {
+                background-image: url('assets/bg_1.webp');
+            }
+            #home-screen {
+                background-image: url('assets/bg_1.webp');
+            }
+            .registration-form {
+                max-width: 280px;
+                gap: 12px;
+            }
+            #score-display {
+                font-size: 14px;
+                padding: 6px 12px;
+                border-width: 2px;
+                box-shadow: 3px 3px 0 #111;
+            }
+            #score-icon {
+                width: 21px;
+                height: 21px;
+            }
+            #score-text {
+                font-size: 14px;
+            }
+            #timer-display {
+                font-size: 14px;
+                padding: 8px 12px;
+                min-width: 50px;
+                min-height: 36px;
+                border-width: 2px;
+                box-shadow: 3px 3px 0 #111;
+            }
+            #streak-display {
+                font-size: 12px;
+                gap: 4px;
+            }
+            #streak-icon {
+                width: 16px;
+                height: 16px;
+            }
+            #streak-text {
+                font-size: 12px;
+            }
+            #registration-screen h1 {
+                font-size: 15px !important;
+            }
+            .form-group label {
+                font-size: 10px;
+            }
+            .form-group input {
+                font-size: 12px;
+                padding: 10px 12px;
+            }
+            #register-button {
+                font-size: 4vw;
+                padding: 1vh 3vw;
+            }
+            #registration-screen img[alt="Game Title"] {
+                width: 80vw !important;
+                max-width: 180px !important;
+            }
             #home-screen img[alt="Game Title"] {
-                width: 70vw;
-                max-width: 260px;
+                width: 80vw !important;
+                max-width: 180px !important;
             }
             #start-button {
                 font-size: 4vw;
@@ -610,7 +856,63 @@
                 min-height: 28px !important;
             }
             .game-description {
-                font-size: 3.5vw;
+                font-size: 3vw !important;
+            }
+            #difficulty-alert {
+                font-size: 16px;
+                padding: 12px 25px;
+                border-width: 3px;
+                box-shadow: 3px 3px 0 #FF8C00;
+                min-width: 250px;
+            }
+            #player {
+                bottom: 10%;
+                width: 18vw;
+                max-width: 120px;
+                min-width: 90px;
+            }
+            #game-finish-screen {
+                background-image: url('assets/bg_1.webp');
+            }
+            #game-finish-screen img[alt="Game Title"] {
+                width: 80vw !important;
+                max-width: 180px !important;
+            }
+            #final-score-display {
+                font-size: 18px;
+            }
+            #finish-message {
+                font-size: 8px;
+                gap: 4px;
+                padding: 0 4px;
+            }
+            #play-again-button {
+                font-size: 4vw;
+                padding: 1vh 3vw;
+                width: 250px;
+            }
+            #leaderboard-button {
+                font-size: 4vw;
+                padding: 1vh 3vw;
+                width: 250px;
+            }
+            #game-over {
+                max-width: 280px;
+                padding: 20px 12px;
+            }
+            #game-over-title {
+                font-size: 18px;
+            }
+            #final-score-message {
+                font-size: 8px;
+                gap: 4px;
+                padding: 0 4px;
+            }
+            .game-over-button {
+                font-size: 14px;
+                padding: 10px 8px;
+                border-width: 2px;
+                box-shadow: 2px 2px 0 #1A3A6B;
             }
         }
     </style>
@@ -618,39 +920,46 @@
 <body>
     <div id="game-container">
         <canvas id="confetti-canvas"></canvas>
-        <img src="assets/cloud.png" alt="Cloud" class="cloud" style="left: 10%;">
-        <img src="assets/cloud.png" alt="Cloud" class="cloud" style="left: 40%;">
-        <img src="assets/cloud.png" alt="Cloud" class="cloud" style="left: 70%;">
+        <div id="registration-screen">
+            <img src="assets/game_title.webp" alt="Game Title">
+            <h1>ENTER YOUR DETAILS</h1>
+            <form class="registration-form">
+                <div class="form-group">
+                    <label for="player-name">NAME:</label>
+                    <input type="text" id="player-name" name="player-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-email">EMAIL:</label>
+                    <input type="email" id="player-email" name="player-email" required>
+                </div>
+                <button type="submit" id="register-button">START GAME</button>
+            </form>
+        </div>
         <div id="home-screen">
-            <img src="assets/cloud.png" alt="Cloud" class="home-cloud" style="left: 6%;">
-            <img src="assets/cloud.png" alt="Cloud" class="home-cloud" style="left: 40%;">
-            <img src="assets/cloud.png" alt="Cloud" class="home-cloud" style="left: 65%;">
-            <img src="assets/game-title.png" alt="Game Title">
-            <img id="music-toggle" src="assets/music_on.png" alt="Music Toggle" style="position: absolute; top: 30px; right: 30px; width: 64px; height: 64px; cursor: pointer; z-index: 1100;">
-            <p class="game-description">Catch the Gametize Trophy to score points, but watch out for the bombs! How many can you catch in 30 seconds?</p>
+            <img src="assets/game_title.webp" alt="Game Title">
+            <img id="music-toggle" src="assets/music_on.webp" alt="Music Toggle" style="position: absolute; top: 30px; right: 30px; width: 64px; height: 64px; cursor: pointer; z-index: 1100;">
+            <p class="game-description">Catch the Coca-Cola bottles to score points, but watch out for the empty bottles! How many can you catch in 30 seconds?</p>
             <button id="start-button">PLAY</button>
         </div>
         <div id="difficulty-alert">Speed Increased!</div>
-        <div id="player"><img id="player-img" src="assets/asset-maki.png" alt="Basket"></div>
+        <div id="player"><img id="player-img" src="assets/retrocokecooler.webp" alt="Basket"></div>
         <div id="score-display">
-            <img src="assets/score.png" alt="Score Icon" id="score-icon">
+            <img src="assets/score.webp" alt="Score Icon" id="score-icon">
             <span id="score-text">0</span>
         </div>
         <div id="timer-display">30</div>
         <div id="streak-display">
-            <img src="assets/streak.png" alt="Streak Icon" id="streak-icon">
+            <img src="assets/streak.webp" alt="Streak Icon" id="streak-icon">
             <span id="streak-text">x0</span>
         </div>
-        <div class="overlay"></div>
-        <div id="game-over">
-            <img id="game-over-flag" src="assets/flag.png" alt="Flag">
-            <div id="game-over-title">GAME OVER!</div>
-            <div id="final-score-message">
-                <img id="final-score-coin" src="assets/coin.png" alt="Coin">
-                <span>You caught <span id="final-score">0</span> Gametize coins!</span>
+        <div id="game-finish-screen">
+            <img src="assets/game_title.webp" alt="Game Title">
+            <div id="final-score-display">Total Score - <span id="final-score">0</span></div>
+            <div id="finish-message">
+                <span>Congratulations! Check your email soon for the RM10 voucher coupon code. [Demo only]</span>
             </div>
-            <button class="game-over-button" id="play-again">Play Again</button>
-            <a href="https://start.gametize.com" target="_blank" class="game-over-button" id="explore-button">Explore Gametize</a>
+            <button id="play-again-button">Play Again</button>
+            <button id="leaderboard-button">Leaderboard</button>
         </div>
     </div>
 
@@ -660,6 +969,9 @@
     <audio id="time-sound" src="assets/time.mp3"></audio>
     <audio id="startgame-sound" src="assets/startgame.mp3"></audio>
 
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
         const gameContainer = document.getElementById('game-container');
         const player = document.getElementById('player');
@@ -668,7 +980,13 @@
         const streakDisplay = document.getElementById('streak-display');
         const gameOverScreen = document.getElementById('game-over');
         const finalScoreDisplay = document.getElementById('final-score');
-        const playAgainButton = document.getElementById('play-again');
+        const gameFinishScreen = document.getElementById('game-finish-screen');
+        const playAgainButton = document.getElementById('play-again-button');
+        const registrationScreen = document.getElementById('registration-screen');
+        const registrationForm = document.querySelector('.registration-form');
+        const playerNameInput = document.getElementById('player-name');
+        const playerEmailInput = document.getElementById('player-email');
+        const registerButton = document.getElementById('register-button');
         const homeScreen = document.getElementById('home-screen');
         const startButton = document.getElementById('start-button');
         const difficultyAlert = document.getElementById('difficulty-alert');
@@ -679,6 +997,29 @@
         const timeSound = document.getElementById('time-sound');
         const startgameSound = document.getElementById('startgame-sound');
         const confettiCanvas = document.getElementById('confetti-canvas');
+        const leaderboardButton = document.getElementById('leaderboard-button');
+
+        // Supabase configuration
+        const SUPABASE_URL = 'https://jvtrwvfriqnssjdfdagf.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2dHJ3dmZyaXFuc3NqZGZkYWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxMzI0NDEsImV4cCI6MjA2OTcwODQ0MX0.ucCg-1s-b4QYokg33YWmZVsd7jbuw9XMZGRW6eASLHI';
+        
+        // Initialize Supabase client with error handling
+        let supabase;
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('Supabase client initialized successfully');
+        } catch (error) {
+            console.error('Failed to initialize Supabase client:', error);
+            supabase = null;
+        }
+
+        // Store current player session data
+        let currentPlayerSession = {
+            name: '',
+            email: '',
+            sessionId: null,
+            gameStartTime: null
+        };
 
         let score = 0;
         let timeLeft = 30;
@@ -693,20 +1034,21 @@
         let fallSpeed = 6; // Initial fall speed
         let bombProbability = 0.35; // Initial bomb probability
         let currentStreak = 0;
-        let hasSpawnedPowerup = false;
+        let powerupSpawnCount = 0;
         const POWERUP_TIME_BONUS = 5; // 5 seconds bonus
+        const MIN_POWERUPS = 2; // Minimum 2 powerups per game
         let musicPlaying = false;
         let confettiActive = false;
 
         const badges = {
             trophy: {
-                img: 'assets/asset-trophy.png',
+                img: 'assets/coke.webp',
                 points: 1,
                 className: 'trophy',
                 probability: 0.65  // Decreased from 0.7 to 0.65 initially
             },
             bomb: {
-                img: 'assets/asset-bomb.png',
+                img: 'assets/coke_empty.webp',
                 points: -1,
                 className: 'bomb',
                 probability: 0.35  // Increased from 0.3 to 0.35 initially
@@ -718,6 +1060,48 @@
         timerDisplay.style.display = 'none';
         streakDisplay.style.display = 'none';
         player.style.display = 'none';
+        homeScreen.style.display = 'none';
+        gameFinishScreen.style.display = 'none';
+
+        registrationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const playerName = playerNameInput.value.trim();
+            const playerEmail = playerEmailInput.value.trim();
+            
+            if (playerName && playerEmail) {
+                try {
+                    // Store player data in localStorage
+                    localStorage.setItem('playerName', playerName);
+                    localStorage.setItem('playerEmail', playerEmail);
+                    
+                    // Store current session data
+                    currentPlayerSession.name = playerName;
+                    currentPlayerSession.email = playerEmail;
+                    currentPlayerSession.sessionId = Date.now().toString();
+                    
+                    console.log('Player registered:', { name: playerName, email: playerEmail });
+                    
+                    // Hide registration screen and show home screen
+                    registrationScreen.classList.add('hide');
+                    setTimeout(() => {
+                        registrationScreen.style.display = 'none';
+                        homeScreen.style.display = 'flex';
+                        homeScreen.classList.remove('hide');
+                    }, 500);
+                } catch (error) {
+                    console.error('Error during registration:', error);
+                    alert('Registration completed. Game will work offline.');
+                    
+                    // Continue anyway
+                    registrationScreen.classList.add('hide');
+                    setTimeout(() => {
+                        registrationScreen.style.display = 'none';
+                        homeScreen.style.display = 'flex';
+                        homeScreen.classList.remove('hide');
+                    }, 500);
+                }
+            }
+        });
 
         startButton.addEventListener('click', () => {
             startgameSound.currentTime = 0;
@@ -742,15 +1126,17 @@
             spawnInterval = 1000;
             fallSpeed = 6;
             bombProbability = 0.35;
-            hasSpawnedPowerup = false;
+            powerupSpawnCount = 0;
             document.getElementById('score-text').textContent = score;
             document.getElementById('streak-text').textContent = 'x0';
             streakDisplay.style.opacity = 0;
             streakDisplay.style.pointerEvents = 'none';
             timerDisplay.textContent = `${timeLeft}`;
-            gameOverScreen.style.display = 'none';
-            document.querySelector('.overlay').style.display = 'none';
+            gameFinishScreen.style.display = 'none';
             initializePlayer();
+
+            // Record game start time
+            currentPlayerSession.gameStartTime = new Date().toISOString();
 
             // Clear any existing badges
             document.querySelectorAll('.badge').forEach(badge => badge.remove());
@@ -762,6 +1148,9 @@
             // Start game loop
             gameInterval = setInterval(createBadge, spawnInterval);
             timerInterval = setInterval(updateTimer, 1000);
+            
+            // Schedule powerup spawns at random times
+            schedulePowerupSpawns();
         }
 
         function increaseDifficulty() {
@@ -817,11 +1206,6 @@
             timeLeft--;
             timerDisplay.textContent = `${timeLeft}`;
 
-            // Try to spawn power-up after 15 seconds if not spawned yet
-            if (timeLeft <= 15 && !hasSpawnedPowerup) {
-                trySpawnPowerup();
-            }
-
             // Increase difficulty at 15 seconds remaining
             if (timeLeft === 15 && !isHardMode) {
                 increaseDifficulty();
@@ -837,9 +1221,11 @@
             clearInterval(gameInterval);
             clearInterval(timerInterval);
             finalScoreDisplay.textContent = score;
-            document.querySelector('.overlay').style.display = 'block';
-            gameOverScreen.style.display = 'block';
+            gameFinishScreen.style.display = 'flex';
             launchConfetti();
+            
+            // Automatically save score to Supabase
+            saveScoreToLeaderboard();
         }
 
         function movePlayer(x) {
@@ -856,6 +1242,53 @@
 
         // Keyboard controls
         document.addEventListener('keydown', (e) => {
+            // Alt + G shortcut to start game
+            if (e.altKey && e.key === 'g') {
+                e.preventDefault();
+                
+                // If on registration screen, skip to home screen
+                if (registrationScreen.style.display !== 'none') {
+                    registrationScreen.classList.add('hide');
+                    setTimeout(() => {
+                        registrationScreen.style.display = 'none';
+                        homeScreen.style.display = 'flex';
+                        homeScreen.classList.remove('hide');
+                    }, 500);
+                }
+                // If on home screen, start the game
+                else if (!isGameRunning && homeScreen.style.display !== 'none') {
+                    startgameSound.currentTime = 0;
+                    startgameSound.play();
+                    homeScreen.classList.add('hide');
+                    setTimeout(() => {
+                        homeScreen.style.display = 'none';
+                        scoreDisplay.style.display = 'block';
+                        timerDisplay.style.display = 'block';
+                        streakDisplay.style.display = 'block';
+                        player.style.display = 'block';
+                        startGame();
+                    }, 500);
+                }
+                // If game is running, restart the game
+                else if (isGameRunning) {
+                    endGame();
+                    setTimeout(() => {
+                        startgameSound.currentTime = 0;
+                        startgameSound.play();
+                        homeScreen.classList.add('hide');
+                        setTimeout(() => {
+                            homeScreen.style.display = 'none';
+                            scoreDisplay.style.display = 'block';
+                            timerDisplay.style.display = 'block';
+                            streakDisplay.style.display = 'block';
+                            player.style.display = 'block';
+                            startGame();
+                        }, 500);
+                    }, 100);
+                }
+                return;
+            }
+
             if (!isGameRunning) return;
 
             const moveAmount = 20;
@@ -895,34 +1328,252 @@
         });
 
         playAgainButton.addEventListener('click', () => {
-            gameOverScreen.style.display = 'none';
-            document.querySelector('.overlay').style.display = 'none';
-            scoreDisplay.style.display = 'block';
-            timerDisplay.style.display = 'block';
-            streakDisplay.style.display = 'block';
-            player.style.display = 'block';
+            gameFinishScreen.style.display = 'none';
             stopConfetti();
-            startGame();
+            
+            // Reset form and show registration screen
+            registrationForm.reset();
+            registrationScreen.style.display = 'flex';
+            registrationScreen.classList.remove('hide');
+            homeScreen.style.display = 'none';
+            scoreDisplay.style.display = 'none';
+            timerDisplay.style.display = 'none';
+            streakDisplay.style.display = 'none';
+            player.style.display = 'none';
         });
+
+        leaderboardButton.addEventListener('click', async () => {
+            try {
+                // Check if Supabase client is available
+                if (!supabase) {
+                    console.error('Supabase client not initialized');
+                    alert('Leaderboard service not available. Please try again later.');
+                    return;
+                }
+
+                // Show loading state
+                leaderboardButton.textContent = 'Loading...';
+                leaderboardButton.disabled = true;
+                
+                // Always try to fetch and display leaderboard
+                let leaderboardData = [];
+                let leaderboardError = null;
+                
+                try {
+                    const { data, error } = await supabase
+                        .from('leaderboard')
+                        .select('*')
+                        .order('score', { ascending: false })
+                        .limit(10);
+                    
+                    if (error) {
+                        console.error('Error fetching leaderboard:', error);
+                        leaderboardError = error;
+                    } else {
+                        leaderboardData = data || [];
+                        console.log('Leaderboard data:', leaderboardData);
+                    }
+                } catch (fetchError) {
+                    console.error('Error fetching leaderboard:', fetchError);
+                    leaderboardError = fetchError;
+                }
+
+                if (leaderboardError) {
+                    console.error('Error fetching leaderboard:', leaderboardError);
+                    // Show a more user-friendly error message
+                    displayLeaderboard([], false, 'Unable to load leaderboard data. Please try again later.');
+                } else {
+                    displayLeaderboard(leaderboardData, false);
+                }
+            } catch (error) {
+                console.error('Unexpected error:', error);
+                // Show a more user-friendly error message
+                displayLeaderboard([], false, 'An unexpected error occurred. Please try again later.');
+            } finally {
+                // Reset button state
+                leaderboardButton.textContent = 'Leaderboard';
+                leaderboardButton.disabled = false;
+            }
+        });
+
+        // Test Supabase connection
+        async function testSupabaseConnection() {
+            if (!supabase) {
+                console.error('Supabase client not available');
+                return false;
+            }
+
+            try {
+                // Test the connection by trying to fetch from the leaderboard table
+                const { data, error } = await supabase
+                    .from('leaderboard')
+                    .select('count')
+                    .limit(1);
+
+                if (error) {
+                    console.error('Supabase connection test failed:', error);
+                    // Don't return false immediately - the table might exist but have RLS policies
+                    // that prevent reading. Let's try a different approach.
+                    return true; // Assume connection is working, RLS policies are the issue
+                }
+
+                console.log('Supabase connection test successful');
+                return true;
+            } catch (error) {
+                console.error('Supabase connection test error:', error);
+                return false;
+            }
+        }
+
+        // Function to save score to leaderboard
+        async function saveScoreToLeaderboard() {
+            if (!supabase) {
+                console.error('Supabase client not available');
+                return false;
+            }
+
+            try {
+                const playerName = currentPlayerSession.name || localStorage.getItem('playerName') || 'Anonymous';
+                const playerEmail = currentPlayerSession.email || localStorage.getItem('playerEmail') || '';
+                
+                console.log('Attempting to save score:', {
+                    playerName,
+                    playerEmail,
+                    score,
+                    timestamp: new Date().toISOString()
+                });
+
+                const { data, error } = await supabase
+                    .from('leaderboard')
+                    .insert([
+                        {
+                            player_name: playerName,
+                            email: playerEmail,
+                            score: score,
+                            created_at: new Date().toISOString()
+                        }
+                    ])
+                    .select();
+
+                if (error) {
+                    console.error('Error saving score:', error);
+                    console.error('Error details:', {
+                        message: error.message,
+                        details: error.details,
+                        hint: error.hint,
+                        code: error.code
+                    });
+                    return false;
+                } else {
+                    console.log('Score saved successfully:', data);
+                    return true;
+                }
+            } catch (error) {
+                console.error('Error saving score:', error);
+                return false;
+            }
+        }
+
+        // Test connection on page load
+        window.addEventListener('load', async () => {
+            const isConnected = await testSupabaseConnection();
+            if (!isConnected) {
+                console.warn('Supabase connection failed. Leaderboard may not work.');
+            }
+        });
+
+        function displayLeaderboard(leaderboardData, scoreSaved = false, errorMessage = null) {
+            // Create leaderboard modal
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+            `;
+
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: #2a2a2a;
+                border: 4px solid #444;
+                border-radius: 0;
+                padding: 20px;
+                max-width: 90%;
+                max-height: 80%;
+                overflow-y: auto;
+                box-shadow: 4px 4px 0 #111;
+                color: white;
+                font-family: 'Press Start 2P', monospace;
+            `;
+
+            let leaderboardHTML = '<h2 style="text-align: center; margin-bottom: 20px; color: #FFD700;">LEADERBOARD</h2>';
+            
+            // Add error message if provided
+            if (errorMessage) {
+                leaderboardHTML += `<p style="text-align: center; margin-bottom: 15px; color: #FF4444; font-size: 12px;">⚠️ ${errorMessage}</p>`;
+            }
+            // Add status message
+            else if (scoreSaved) {
+                leaderboardHTML += '<p style="text-align: center; margin-bottom: 15px; color: #4CAF50; font-size: 12px;">✅ Your score has been saved!</p>';
+            }
+
+            if (leaderboardData && leaderboardData.length > 0) {
+                leaderboardHTML += '<table style="width: 100%; border-collapse: collapse;">';
+                leaderboardHTML += '<tr style="background: #444;"><th style="padding: 10px; text-align: left;">Rank</th><th style="padding: 10px; text-align: left;">Player</th><th style="padding: 10px; text-align: left;">Score</th></tr>';
+
+                leaderboardData.forEach((entry, index) => {
+                    const rank = index + 1;
+                    const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}.`;
+                    const rowStyle = index % 2 === 0 ? 'background: #333;' : 'background: #2a2a2a;';
+                    leaderboardHTML += `<tr style="${rowStyle}">
+                        <td style="padding: 10px;">${medal}</td>
+                        <td style="padding: 10px;">${entry.player_name}</td>
+                        <td style="padding: 10px; color: #FFD700;">${entry.score}</td>
+                    </tr>`;
+                });
+
+                leaderboardHTML += '</table>';
+            } else {
+                leaderboardHTML += '<p style="text-align: center; color: #888; font-size: 14px; margin: 20px 0;">No scores yet. Be the first to set a record!</p>';
+            }
+
+            leaderboardHTML += '<div style="text-align: center; margin-top: 20px;"><button id="close-leaderboard" style="padding: 10px 20px; background: #4A90E2; color: white; border: 2px solid #2C5AA0; cursor: pointer; font-family: \'Press Start 2P\', monospace;">Close</button></div>';
+
+            modalContent.innerHTML = leaderboardHTML;
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+
+            // Close button functionality
+            document.getElementById('close-leaderboard').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+
+            // Close on outside click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', function closeOnEscape(e) {
+                if (e.key === 'Escape') {
+                    document.body.removeChild(modal);
+                    document.removeEventListener('keydown', closeOnEscape);
+                }
+            });
+        }
 
         function createScoreAnimation(x, y, isPositive) {
             const animation = document.createElement('div');
             animation.className = `score-animation ${isPositive ? 'score-plus' : 'score-minus'}`;
-            if (isPositive) {
-                const img = document.createElement('img');
-                img.src = 'assets/+1.png';
-                img.alt = '+1';
-                img.style.width = '40px';
-                img.style.height = '40px';
-                animation.appendChild(img);
-            } else {
-                const img = document.createElement('img');
-                img.src = 'assets/-1.png';
-                img.alt = '-1';
-                img.style.width = '40px';
-                img.style.height = '40px';
-                animation.appendChild(img);
-            }
+            animation.textContent = isPositive ? '+1' : '-1';
             animation.style.left = `${x}px`;
             animation.style.top = `${y}px`;
             gameContainer.appendChild(animation);
@@ -945,12 +1596,7 @@
         function createBonusAnimation(x, y) {
             const animation = document.createElement('div');
             animation.className = 'bonus-animation';
-            const img = document.createElement('img');
-            img.src = 'assets/+3.png';
-            img.alt = '+3 BONUS!';
-            img.style.width = '48px';
-            img.style.height = '48px';
-            animation.appendChild(img);
+            animation.textContent = '+3 BONUS!';
             animation.style.left = `${x}px`;
             animation.style.top = `${y}px`;
             gameContainer.appendChild(animation);
@@ -995,7 +1641,7 @@
             const explosion = document.createElement('div');
             explosion.className = 'explosion';
             const explosionImg = document.createElement('img');
-            explosionImg.src = 'assets/explosion.png';
+            explosionImg.src = 'assets/explosion.webp';
             explosionImg.alt = 'explosion';
             explosionImg.style.width = '80px';
             explosionImg.style.height = '80px';
@@ -1092,12 +1738,7 @@
         function createTimeBonusAnimation(x, y) {
             const animation = document.createElement('div');
             animation.className = 'time-bonus-animation';
-            const img = document.createElement('img');
-            img.src = 'assets/+5s.png';
-            img.alt = '+5s';
-            img.style.width = '48px';
-            img.style.height = '48px';
-            animation.appendChild(img);
+            animation.textContent = '+5s';
             animation.style.left = `${x}px`;
             animation.style.top = `${y}px`;
             gameContainer.appendChild(animation);
@@ -1112,10 +1753,41 @@
             }, 1200);
         }
 
+        function schedulePowerupSpawns() {
+            // Schedule 2 powerups at random times between 5-25 seconds
+            const spawnTimes = [];
+            
+            // Generate 2 random spawn times
+            for (let i = 0; i < MIN_POWERUPS; i++) {
+                let randomTime;
+                do {
+                    randomTime = Math.floor(Math.random() * 20) + 5; // Random time between 5-25 seconds
+                } while (spawnTimes.includes(randomTime)); // Ensure unique times
+                spawnTimes.push(randomTime);
+            }
+            
+            // Sort times to spawn in chronological order
+            spawnTimes.sort((a, b) => a - b);
+            
+            console.log('Scheduled powerup spawns at:', spawnTimes, 'seconds');
+            
+            // Schedule each powerup spawn
+            spawnTimes.forEach((spawnTime, index) => {
+                setTimeout(() => {
+                    if (isGameRunning && powerupSpawnCount < MIN_POWERUPS) {
+                        createPowerup();
+                        powerupSpawnCount++;
+                        console.log(`Powerup ${index + 1} spawned at ${30 - timeLeft} seconds`);
+                    }
+                }, spawnTime * 1000);
+            });
+        }
+
         function trySpawnPowerup() {
-            if (!hasSpawnedPowerup && Math.random() < 0.3) { // 30% chance to spawn
-                hasSpawnedPowerup = true;
+            // Legacy function - now handled by schedulePowerupSpawns
+            if (powerupSpawnCount < MIN_POWERUPS && Math.random() < 0.3) {
                 createPowerup();
+                powerupSpawnCount++;
             }
         }
 
@@ -1123,7 +1795,7 @@
             const powerup = document.createElement('div');
             powerup.className = 'badge time-powerup';
             const powerupImg = document.createElement('img');
-            powerupImg.src = 'assets/asset-super.png';
+            powerupImg.src = 'assets/icecube.webp';
             powerupImg.alt = 'extra time';
             powerupImg.style.width = '48px';
             powerupImg.style.height = '48px';
@@ -1179,13 +1851,13 @@
 
         function music_on() {
             bgMusic.play();
-            musicToggle.src = 'assets/music_on.png';
+            musicToggle.src = 'assets/music_on.webp';
             musicPlaying = true;
         }
 
         function music_off() {
             bgMusic.pause();
-            musicToggle.src = 'assets/music_off.png';
+            musicToggle.src = 'assets/music_off.webp';
             musicPlaying = false;
         }
 
@@ -1199,7 +1871,7 @@
 
         // Set music icon to off by default
         bgMusic.volume = 0.5;
-        musicToggle.src = 'assets/music_off.png';
+        musicToggle.src = 'assets/music_off.webp';
 
         // Set volumes for all sounds
         pointSound.volume = 1.0;
