@@ -829,7 +829,7 @@
                 padding: 6px 12px;
                 border-width: 2px;
                 box-shadow: 3px 3px 0 #111;
-                top: calc(40px + env(safe-area-inset-top)) !important; /* Account for Safari safe area */
+                top: calc(80px + env(safe-area-inset-top)) !important; /* Account for Safari safe area */
                 left: calc(20px + env(safe-area-inset-left)) !important;
                 z-index: 1000 !important; /* Ensure visibility */
             }
@@ -847,14 +847,14 @@
                 min-height: 36px;
                 border-width: 2px;
                 box-shadow: 3px 3px 0 #111;
-                top: calc(40px + env(safe-area-inset-top)) !important; /* Account for Safari safe area */
+                top: calc(80px + env(safe-area-inset-top)) !important; /* Account for Safari safe area */
                 right: calc(20px + env(safe-area-inset-right)) !important;
                 z-index: 1000 !important; /* Ensure visibility */
             }
             #streak-display {
                 font-size: 12px;
                 gap: 4px;
-                top: calc(70px + env(safe-area-inset-top)) !important; /* Account for Safari safe area */
+                top: calc(110px + env(safe-area-inset-top)) !important; /* Account for Safari safe area */
                 left: calc(30px + env(safe-area-inset-left)) !important;
                 z-index: 1000 !important; /* Ensure visibility */
             }
@@ -862,13 +862,13 @@
             /* Safari-specific adjustments for devices with notch */
             @supports (-webkit-touch-callout: none) {
                 #score-display {
-                    top: calc(60px + env(safe-area-inset-top)) !important;
+                    top: calc(100px + env(safe-area-inset-top)) !important;
                 }
                 #timer-display {
-                    top: calc(60px + env(safe-area-inset-top)) !important;
+                    top: calc(100px + env(safe-area-inset-top)) !important;
                 }
                 #streak-display {
-                    top: calc(90px + env(safe-area-inset-top)) !important;
+                    top: calc(130px + env(safe-area-inset-top)) !important;
                 }
             }
             #streak-icon {
