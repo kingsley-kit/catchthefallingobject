@@ -25,6 +25,11 @@
             font-family: 'Press Start 2P', monospace;
             padding-top: max(50px, env(safe-area-inset-top));
             padding-bottom: max(50px, env(safe-area-inset-bottom));
+            touch-action: none; /* Prevent default touch behaviors */
+            user-select: none; /* Prevent text selection */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE/Edge */
         }
 
         #game-container {
@@ -42,6 +47,11 @@
             display: flex;
             flex-direction: column;
             margin: 0 auto;
+            touch-action: none; /* Prevent default touch behaviors */
+            user-select: none; /* Prevent text selection */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE/Edge */
         }
 
         @media (max-width: 600px), (max-height: 850px) {
@@ -1302,20 +1312,26 @@
         // Touch controls
         gameContainer.addEventListener('touchstart', (e) => {
             if (!isGameRunning) return;
+            e.preventDefault(); // Prevent default touch behavior
             const rect = gameContainer.getBoundingClientRect();
             isDragging = true;
-            // Center touch on player
-            touchStartX = e.touches[0].clientX - rect.left - playerX;
+            // Calculate touch position relative to game container
+            const touchX = e.touches[0].clientX - rect.left;
+            movePlayer(touchX - player.offsetWidth / 2);
         });
 
         gameContainer.addEventListener('touchmove', (e) => {
-            if (!isGameRunning || !isDragging) return;
+            if (!isGameRunning) return;
+            e.preventDefault(); // Prevent default touch behavior
             const rect = gameContainer.getBoundingClientRect();
-            const touchX = e.touches[0].clientX - rect.left - player.offsetWidth / 2;
-            movePlayer(touchX);
+            // Calculate touch position relative to game container
+            const touchX = e.touches[0].clientX - rect.left;
+            movePlayer(touchX - player.offsetWidth / 2);
         });
 
-        gameContainer.addEventListener('touchend', () => {
+        gameContainer.addEventListener('touchend', (e) => {
+            if (!isGameRunning) return;
+            e.preventDefault(); // Prevent default touch behavior
             isDragging = false;
         });
 
