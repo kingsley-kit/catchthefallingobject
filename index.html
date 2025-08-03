@@ -1749,17 +1749,17 @@
             const badgeImg = document.createElement('img');
             badgeImg.src = badgeInfo.img;
             badgeImg.alt = badgeType;
-            badgeImg.style.width = '48px';
-            badgeImg.style.height = '48px';
+            badgeImg.style.width = '56px';
+            badgeImg.style.height = '56px';
             badge.appendChild(badgeImg);
             
-            const x = Math.random() * (gameContainer.clientWidth - 60);
+            const x = Math.random() * (gameContainer.clientWidth - 56);
             badge.style.left = `${x}px`;
-            badge.style.top = '-60px';
+            badge.style.top = '-56px';
             
             gameContainer.appendChild(badge);
 
-            let badgeY = -60;
+            let badgeY = -56;
             const currentFallSpeed = fallSpeed;
             let hasCollided = false;
             const fallInterval = setInterval(() => {
@@ -1772,11 +1772,11 @@
                 badge.style.top = `${badgeY}px`;
 
                 // Check for collision with player at basket level
-                const basketY = gameContainer.clientHeight - 150;
-                if (!hasCollided && badgeY + 30 >= basketY && badgeY + 30 <= basketY + 40) {
+                const basketY = gameContainer.clientHeight - 110;
+                if (!hasCollided && badgeY + 28 >= basketY && badgeY + 28 <= basketY + 40) {
                     // Use bounding box for accurate collision
                     const badgeX = parseInt(badge.style.left);
-                    const badgeCenterX = badgeX + 30;
+                    const badgeCenterX = badgeX + 28;
                     const playerRect = player.getBoundingClientRect();
                     const containerRect = gameContainer.getBoundingClientRect();
                     // Calculate player center in game coordinates
@@ -1872,17 +1872,17 @@
             const powerupImg = document.createElement('img');
             powerupImg.src = 'assets/icecube.webp';
             powerupImg.alt = 'extra time';
-            powerupImg.style.width = '48px';
-            powerupImg.style.height = '48px';
+            powerupImg.style.width = '56px';
+            powerupImg.style.height = '56px';
             powerup.appendChild(powerupImg);
             
-            const x = Math.random() * (gameContainer.clientWidth - 60);
+            const x = Math.random() * (gameContainer.clientWidth - 56);
             powerup.style.left = `${x}px`;
-            powerup.style.top = '-60px';
+            powerup.style.top = '-56px';
             
             gameContainer.appendChild(powerup);
 
-            let powerupY = -60;
+            let powerupY = -56;
             const currentFallSpeed = fallSpeed;
             let hasCollided = false;
             const fallInterval = setInterval(() => {
@@ -1895,10 +1895,10 @@
                 powerup.style.top = `${powerupY}px`;
 
                 // Check for collision with player
-                const basketY = gameContainer.clientHeight - 150;
-                if (!hasCollided && powerupY + 30 >= basketY && powerupY + 30 <= basketY + 40) {
+                const basketY = gameContainer.clientHeight - 120;
+                if (!hasCollided && powerupY + 32 >= basketY && powerupY + 32 <= basketY + 40) {
                     const powerupX = parseInt(powerup.style.left);
-                    const powerupCenterX = powerupX + 30;
+                    const powerupCenterX = powerupX + 32;
                     const playerRect = player.getBoundingClientRect();
                     const containerRect = gameContainer.getBoundingClientRect();
                     const playerCenterX = playerRect.left - containerRect.left + playerRect.width / 2;
